@@ -1,0 +1,99 @@
+<div class="container">
+
+  <div class="row">
+    <!-- Consultation d'un compte -->
+    <div class="col-md-6">
+      <div class="card border-primary">
+        <div class="card-header">Consultation d'un compte</div>
+        <div class="card-body">
+          <form (ngSubmit)="onSubmit()">
+            <div class="form-group">
+              <label for="codeCompte">Code du compte</label>
+              <input type="text" id="codeCompte" class="form-control" [(ngModel)]="codeCompte" name="codeCompte"/>
+            </div>
+            <button type="submit" class="btn btn-primary mt-2">Ok</button>
+          </form>
+        </div>
+      </div>
+    </div>
+
+  <div *ngIf="compte" class="col-md-6">
+  <div class="card border-primary">
+    <div class="card-header">Opérations sur le compte</div>
+    <div class="card-body">
+ <!-- Formulaire réactif -->
+      <form [formGroup]="formGroup" (ngSubmit)="onShowOperation()">
+
+
+        <!-- Boutons radio pour le type d'opération -->
+        <div class="form-check">
+          <input value="retrait" formControlName="typeOperation" class="form-check-input" type="radio" id="flexRadioDefault1">
+          <label class="form-check-label" for="flexRadioDefault1">Retrait</label>
+        </div>
+
+        <div class="form-check">
+          <input value="versement" formControlName="typeOperation" class="form-check-input" type="radio" id="flexRadioDefault2">
+          <label class="form-check-label" for="flexRadioDefault2">Versement</label>
+        </div>
+
+        <div class="form-check">
+          <input value="virement" formControlName="typeOperation" class="form-check-input" type="radio" id="flexRadioDefault3">
+          <label class="form-check-label" for="flexRadioDefault3">Virement</label>
+        </div> 
+
+        <!-- Champs pour virement -->
+        <div *ngIf="formGroup.get('typeOperation')?.value === 'virement'" class="form-group">
+          <label for="codeCompte2">Vers</label>
+          <input type="text" id="codeCompte2" class="form-control" formControlName="codeCompte2"/>
+          <label for="motif">Motif</label>
+          <input type="text" id="motif" class="form-control" formControlName="motif" />
+        </div>
+
+        <!-- Montant -->
+        <div class="form-group">
+          <label for="montant">Montant</label>
+          <input type="number" id="montant" class="form-control" formControlName="montant" />
+        </div>
+
+        <!-- Motif (uniquement pour virement) -->
+        <!-- <div *ngIf="formGroup.get('typeOperation')?.value === 'virement'" class="form-group">
+          <label for="motif">Motif</label>
+          <input type="text" id="motif" class="form-control" formControlName="motif" />
+        </div>  -->
+        
+
+        <!-- Bouton soumettre -->
+        <button type="submit" class="btn btn-primary mt-2">Effectuer</button>
+      </form> 
+     
+
+    </div>
+  </div>
+</div>
+
+
+
+    <!-- Informations sur le compte -->
+    <div class="col-md-6" *ngIf="compte">
+      <div class="card border-primary">
+        <div class="card-header">Informations sur le compte</div>
+        <div class="card-body">
+          <p><strong>Code:</strong> {{ compte.codeCompte }}</p>
+          <!-- <p><strong *ngIf="compte.client">Nom:</strong> {{ compte.client.name }}</p> -->
+          <p><strong>Solde:</strong> {{ compte.solde }}</p>
+          <p><strong>Date de création:</strong> {{ compte.dateCreation | date:'short' }}</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Liste des opérations -->
+    <div *ngIf="compte" class="col-md-6">
+      <div class="card border-primary">
+        <div class="card-header">Liste des opérations</div>
+        <div class="card-body">
+          
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
